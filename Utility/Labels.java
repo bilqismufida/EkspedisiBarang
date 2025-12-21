@@ -25,5 +25,8 @@ public class Labels {
     public static String id_not_found() {
         return "\n" + Color.ANSI_RED + "[X] ID tidak ditemukan" + Color.ANSI_RESET;
     }
+    public static String data_not_found() {
+        return "\n" + Color.ANSI_RED + "[X] Data tidak ditemukan" + Color.ANSI_RESET;
+    }
 }
 

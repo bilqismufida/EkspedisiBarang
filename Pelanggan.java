@@ -20,7 +20,9 @@ class Pelanggan {
             System.out.println("1. Tambah Data");
             if (!Database.dataPelanggan.isEmpty()) {
                 System.out.println("2. Edit Data");
-                System.out.println("3. Hapus Data");
+                System.out.println("3. Pencarian Data");
+                System.out.println("4. Hapus Data");
+                
             }
             System.out.println("0. Kembali");
             System.out.print("Pilih: ");
@@ -44,6 +46,10 @@ class Pelanggan {
                     break;
 
                 case 3:
+                    cariDataPelanggan ();
+                    break;
+
+                case 4:
                     if (!Database.dataPelanggan.isEmpty()) {
                         hapusDataPelanggan();
                     } else {
@@ -51,6 +57,7 @@ class Pelanggan {
                         tampilkanTableOnly();
                     }
                     break;
+
                 case 0:
                     TitlePrinter.sub("Kembali", Color.YELLOW);
                     break;
@@ -65,7 +72,8 @@ class Pelanggan {
         printTableHeader();
 
         if (Database.dataPelanggan.isEmpty()) {
-            System.out.println("|                TIDAK ADA DATA PELANGGAN                                                 |");
+            System.out.println(
+                    "|                TIDAK ADA DATA PELANGGAN                                                 |");
         } else {
             for (DataPelanggan p : Database.dataPelanggan) {
                 printRow(p);
@@ -102,7 +110,7 @@ class Pelanggan {
         System.out.println("=============================");
 
         Database.dataPelanggan.add(new DataPelanggan(nextId++, nama, alamat, telepon, email));
-        System.out.println("\n"+Labels.success("Pelanggan berhasil ditambahkan!"));
+        System.out.println("\n" + Labels.success("Pelanggan berhasil ditambahkan!"));
 
         tampilkanTableOnly();
     }
@@ -112,19 +120,19 @@ class Pelanggan {
         printTableHeader();
 
         if (Database.dataPelanggan.isEmpty()) {
-            System.out.println("|                TIDAK ADA DATA PELANGGAN                                                 |");
-            printTableFooter();
+            System.out.println(
+                    "|                TIDAK ADA DATA PELANGGAN                                                 |");
         } else {
             for (DataPelanggan p : Database.dataPelanggan) {
                 printRow(p);
             }
-            printTableFooter();
         }
+        printTableFooter();
 
         menuCrud();
     }
 
-    //UPDATE
+    // UPDATE
     public static void editDataPelanggan() {
         tampilkanTableOnly();
 
@@ -147,7 +155,7 @@ class Pelanggan {
         }
 
         do {
-            
+
             System.out.println("========= Edit Menu =========");
             System.out.println("Pilih data yang ingin diedit\n");
             System.out.println("1. Nama");
@@ -207,7 +215,7 @@ class Pelanggan {
             }
         } while (pilih != 0);
 
-        System.out.println("\n"+Labels.success("Pelanggan berhasil diedit!"));
+        System.out.println("\n" + Labels.success("Pelanggan berhasil diedit!"));
 
         tampilkanTableOnly();
     }
@@ -236,9 +244,62 @@ class Pelanggan {
         }
 
         Database.dataPelanggan.remove(p);
-        System.out.println("\n"+Labels.success("Pelanggan berhasil dihapus!"));
+        System.out.println("\n" + Labels.success("Pelanggan berhasil dihapus!"));
 
         tampilkanTableOnly();
+    }
+
+    public static void cariDataPelanggan() {
+        
+        Scanner input = new Scanner(System.in);
+
+        System.out.println("\n=== Pencarian Data Pelanggan ===");
+        System.out.println("1. Pencarian Berdasarkan ID");
+        System.out.println("2. Pencarian Berdasarkan Nama");
+        System.out.print("Pilih: ");
+        int pilih = input.nextInt();
+        input.nextLine();
+
+        switch (pilih) {
+            case 1:
+                System.out.print("Masukkan ID Pelanggan yang ingin dicari: ");
+                int idPelanggan = input.nextInt();
+                input.nextLine();
+                DataPelanggan p = cariById(idPelanggan);
+                printTableHeader();
+                if (p != null) {
+                    printRow(p);
+                } else {
+                    System.out.println(Labels.id_not_found());
+                }
+                printTableFooter();
+                break;
+            case 2:
+                System.out.print("Masukkan Nama Pelanggan yang ingin dicari: ");
+                String namaPelanggan = input.nextLine();
+                DataPelanggan pByName = cariByNama(namaPelanggan);
+                printTableHeader();
+                if (pByName != null) {
+                    printRow(pByName);
+                } else {
+                    System.out.println(Labels.data_not_found());
+                }
+                printTableFooter();
+                break;
+            default:
+                System.out.println(Labels.opt_not_valid());
+        }
+    }
+
+    public static DataPelanggan cariByNama(String nama) {
+        for (DataPelanggan p : Database.dataPelanggan) {
+            if (p.nama.toLowerCase().contains(nama.toLowerCase())) {
+                return p;
+            }
+
+        }
+        return null;
+        
     }
 
     // SEARCH BY ID
@@ -247,16 +308,21 @@ class Pelanggan {
             if (p.id == id) {
                 return p;
             }
+   
         }
         return null;
+
     }
 
     // TABEL UTILITY
     private static void printTableHeader() {
         TitlePrinter.print("Data Pelanggan", Color.CYAN);
-        System.out.println("+----+----------------------+----------------------+---------------+----------------------+");
-        System.out.println("| ID | Nama                 | Alamat               | No Telp       | Email                |");
-        System.out.println("+----+----------------------+----------------------+---------------+----------------------+");
+        System.out
+                .println("+----+----------------------+----------------------+---------------+----------------------+");
+        System.out
+                .println("| ID | Nama                 | Alamat               | No Telp       | Email                |");
+        System.out
+                .println("+----+----------------------+----------------------+---------------+----------------------+");
     }
 
     private static void printRow(DataPelanggan p) {
@@ -265,7 +331,8 @@ class Pelanggan {
     }
 
     private static void printTableFooter() {
-        System.out.println("+-----------------------------------------------------------------------------------------+");
+        System.out
+                .println("+-----------------------------------------------------------------------------------------+");
         TitlePrinter.print("~ ~ ~", Color.CYAN);
     }
 }

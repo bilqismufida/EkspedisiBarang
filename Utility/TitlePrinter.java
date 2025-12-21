@@ -19,7 +19,7 @@ public class TitlePrinter {
         );
     }
     public static void printTableE(String title, String color) {
-        int WIDTH = 111;
+        int WIDTH = 135;
         String cleanTitle = title.toUpperCase();
         String text = " " + cleanTitle + " ";
 
