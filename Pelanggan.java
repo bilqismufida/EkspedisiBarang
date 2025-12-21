@@ -1,3 +1,4 @@
+
 import Utility.Color;
 import Utility.Labels;
 import Utility.TitlePrinter;
@@ -10,7 +11,6 @@ import java.util.Scanner;
 class Pelanggan {
 
     static Scanner input = new Scanner(System.in);
-    static int nextId = 1;
 
     // MENU CRUD
     public static void menuCrud() {
@@ -22,7 +22,7 @@ class Pelanggan {
                 System.out.println("2. Edit Data");
                 System.out.println("3. Pencarian Data");
                 System.out.println("4. Hapus Data");
-                
+
             }
             System.out.println("0. Kembali");
             System.out.print("Pilih: ");
@@ -46,7 +46,7 @@ class Pelanggan {
                     break;
 
                 case 3:
-                    cariDataPelanggan ();
+                    cariDataPelanggan();
                     break;
 
                 case 4:
@@ -108,8 +108,9 @@ class Pelanggan {
         String email = input.next();
 
         System.out.println("=============================");
-
-        Database.dataPelanggan.add(new DataPelanggan(nextId++, nama, alamat, telepon, email));
+        
+        int nextId = Database.getNextPelangganId();
+        Database.dataPelanggan.add(new DataPelanggan(nextId, nama, alamat, telepon, email));
         System.out.println("\n" + Labels.success("Pelanggan berhasil ditambahkan!"));
 
         tampilkanTableOnly();
@@ -250,7 +251,7 @@ class Pelanggan {
     }
 
     public static void cariDataPelanggan() {
-        
+
         Scanner input = new Scanner(System.in);
 
         System.out.println("\n=== Pencarian Data Pelanggan ===");
@@ -299,7 +300,7 @@ class Pelanggan {
 
         }
         return null;
-        
+
     }
 
     // SEARCH BY ID
@@ -308,10 +309,9 @@ class Pelanggan {
             if (p.id == id) {
                 return p;
             }
-   
+
         }
         return null;
-
     }
 
     // TABEL UTILITY
