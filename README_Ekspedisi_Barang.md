@@ -57,6 +57,10 @@ A. FITUR WAJIB
    - Edit dan hapus data pelanggan
    - Edit dan hapus data ekspedisi
 
+5. Sorting Data
+   - Mengurutkan data pelanggan berdasarkan ID pelanggan (ASC) dan nama (A-Z)
+   - Mengurutkan data ekspedisi berdasarkan ID ekspedisi (ASC) dan status (Dikemas-Dikirim-Selesai)
+
 
 B. FITUR TAMBAHAN
 -----------------

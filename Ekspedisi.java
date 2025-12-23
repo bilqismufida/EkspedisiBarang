@@ -141,6 +141,7 @@ class Ekspedisi {
         int pilih;
         do {
             System.out.println("\n=== Ubah Data Ekspedisi ===");
+            System.out.println("[ ID Ekspedisi yang diubah: " + id + " ]");
             System.out.println("1. Edit Data");
             System.out.println("2. Hapus Data");
             System.out.println("0. Kembali");
@@ -339,7 +340,7 @@ class Ekspedisi {
         do {
             System.out.println("====== Menu Ekspedisi ======");
             System.out.println("1. Tambah Data");
-            System.out.println("2. Edit / Hapus Data");
+            System.out.println("2. Ubah Data");
             System.out.println("3. Pencarian Data Ekspedisi");
             System.out.println("4. Sorting Data Ekspedisi");
             System.out.println("0. Kembali");
@@ -395,7 +396,7 @@ class Ekspedisi {
         return null;
     }
 
-    // TABEL UTILITY
+    // SEARCH MENU
     public static void cariDataEkspedisi() {
         System.out.println("\n=== Pencarian Data Ekspedisi ===");
         System.out.println("1. Pencarian Berdasarkan Jenis Layanan");

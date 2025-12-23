@@ -138,6 +138,7 @@ class Pelanggan {
         int pilih;
         do {
             System.out.println("\n=== Ubah Data Pelanggan ===");
+            System.out.println("[ ID menu yang diedit: " + id + " ]");
             System.out.println("1. Edit Data");
             System.out.println("2. Hapus Data");
             System.out.println("0. Kembali");
