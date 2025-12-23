@@ -308,6 +308,55 @@ class Ekspedisi {
 
         tampilkanDataEkspedisi();
     }
+        public static void menuSorting() {
+    int pilih;
+
+    System.out.println("\n=== Sorting Data Ekspedisi ===");
+    System.out.println("1. Sorting berdasarkan ID Ekspedisi");
+    System.out.println("2. Sorting berdasarkan Status");
+    System.out.print("Pilih: ");
+    pilih = input.nextInt();
+    input.nextLine();
+
+    switch (pilih) {
+        case 1:
+            sortByIdEkspedisi();
+            break;
+        case 2:
+            sortByStatus();
+            break;
+        default:
+            System.out.println(Labels.opt_not_valid());
+    }
+
+    tampilkanTableOnly();
+}
+    public static void sortByIdEkspedisi() {
+    for (int i = 0; i < Database.dataEkspedisi.size() - 1; i++) {
+        for (int j = 0; j < Database.dataEkspedisi.size() - i - 1; j++) {
+            if (Database.dataEkspedisi.get(j).id_layanan >
+                Database.dataEkspedisi.get(j + 1).id_layanan) {
+
+                DataEkspedisi temp = Database.dataEkspedisi.get(j);
+                Database.dataEkspedisi.set(j, Database.dataEkspedisi.get(j + 1));
+                Database.dataEkspedisi.set(j + 1, temp);
+            }
+        }
+    }
+}
+    public static void sortByStatus() {
+    for (int i = 0; i < Database.dataEkspedisi.size() - 1; i++) {
+        for (int j = 0; j < Database.dataEkspedisi.size() - i - 1; j++) {
+            if (Database.dataEkspedisi.get(j).status_ekspedisi
+                    .compareToIgnoreCase(Database.dataEkspedisi.get(j + 1).status_ekspedisi) > 0) {
+
+                DataEkspedisi temp = Database.dataEkspedisi.get(j);
+                Database.dataEkspedisi.set(j, Database.dataEkspedisi.get(j + 1));
+                Database.dataEkspedisi.set(j + 1, temp);
+            }
+        }
+    }
+}
 
     // MENU CRUD
     public static void menuCrud() {
@@ -321,6 +370,8 @@ class Ekspedisi {
                 System.out.println("2. Edit Data");
                 System.out.println("3. Hapus Data");
                 System.out.println("4. Pencarian Data Ekspedisi");
+                System.out.println("5. Sorting Data Ekspedisi");
+
             }
             System.out.println("0. Kembali");
             System.out.print("Pilih: ");
@@ -342,6 +393,10 @@ class Ekspedisi {
                 case 4:
                     cariDataEkspedisi(); // Panggil pencarian ekspedisi
                     break;
+                case 5:
+                    menuSorting();
+                    break;
+
                 case 0:
                     TitlePrinter.sub("Kembali", Color.YELLOW);
                     break;
