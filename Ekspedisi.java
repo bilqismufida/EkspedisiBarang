@@ -334,100 +334,102 @@ class Ekspedisi {
     }
 
     // MENU CRUD
-public static void menuCrud() {
-    int pilih;
+    public static void menuCrud() {
+        int pilih;
 
-    do {
-        System.out.println("====== Menu Ekspedisi ======");
-        System.out.println("1. Tambah Data");
-        System.out.println("2. Ubah Data");
-        System.out.println("3. Pencarian Data Ekspedisi");
-        System.out.println("4. Sorting Data Ekspedisi");
-        System.out.println("5. Tampilkan Berdasarkan Layanan");
-        System.out.println("0. Kembali");
+        do {
+            System.out.println("====== Menu Ekspedisi ======");
+            System.out.println("1. Tambah Data");
+            System.out.println("2. Ubah Data");
+            System.out.println("3. Pencarian Data Ekspedisi");
+            System.out.println("4. Sorting Data Ekspedisi");
+            System.out.println("5. Tampilkan Berdasarkan Layanan");
+            System.out.println("0. Kembali");
+            System.out.print("Pilih: ");
+            pilih = input.nextInt();
+            input.nextLine();
+
+            System.out.println("============================");
+
+            switch (pilih) {
+                case 1:
+                    tambahDataEkspedisi();
+                    break;
+                case 2:
+                    if (!Database.dataEkspedisi.isEmpty()) {
+                        pilihEditAtauHapusEkspedisi();
+                    } else {
+                        System.out.println(Labels.warning("Tidak ada data ekspedisi"));
+                    }
+                    break;
+                case 3:
+                    cariDataEkspedisi();
+                    break;
+                case 4:
+                    menuSorting();
+                    break;
+                case 5:
+                    menuTampilBerdasarkanLayanan();
+                    break;
+                case 0:
+                    TitlePrinter.sub("Kembali", Color.YELLOW);
+                    break;
+                default:
+                    System.out.println(Labels.opt_not_valid());
+            }
+        } while (pilih != 0);
+    }
+
+    public static void menuTampilBerdasarkanLayanan() {
+        int pilih;
+        String layanan = "";
+
+        System.out.println("\n=== Tampilkan Ekspedisi Berdasarkan Layanan ===");
+        System.out.println("[1] REG");
+        System.out.println("[2] EXP");
+        System.out.println("[3] ECO");
         System.out.print("Pilih: ");
         pilih = input.nextInt();
         input.nextLine();
 
-        System.out.println("============================");
-
         switch (pilih) {
             case 1:
-                tambahDataEkspedisi();
+                layanan = "REG";
                 break;
             case 2:
-                if (!Database.dataEkspedisi.isEmpty()) {
-                    pilihEditAtauHapusEkspedisi();
-                } else {
-                    System.out.println(Labels.warning("Tidak ada data ekspedisi"));
-                }
+                layanan = "EXP";
                 break;
             case 3:
-                cariDataEkspedisi();
-                break;
-            case 4:
-                menuSorting();
-                break;
-            case 5:
-                menuTampilBerdasarkanLayanan();
-                break;
-            case 0:
-                TitlePrinter.sub("Kembali", Color.YELLOW);
+                layanan = "ECO";
                 break;
             default:
                 System.out.println(Labels.opt_not_valid());
+                return;
         }
-    } while (pilih != 0);
-}
-public static void menuTampilBerdasarkanLayanan() {
-    int pilih;
-    String layanan = "";
 
-    System.out.println("\n=== Tampilkan Ekspedisi Berdasarkan Layanan ===");
-    System.out.println("[1] REG");
-    System.out.println("[2] EXP");
-    System.out.println("[3] ECO");
-    System.out.print("Pilih: ");
-    pilih = input.nextInt();
-    input.nextLine();
-
-    switch (pilih) {
-        case 1:
-            layanan = "REG";
-            break;
-        case 2:
-            layanan = "EXP";
-            break;
-        case 3:
-            layanan = "ECO";
-            break;
-        default:
-            System.out.println(Labels.opt_not_valid());
-            return;
+        tampilkanEkspedisiBerdasarkanLayanan(layanan);
     }
 
-    tampilkanEkspedisiBerdasarkanLayanan(layanan);
-}
-public static void tampilkanEkspedisiBerdasarkanLayanan(String jenisLayanan) {
-    printTableHeader();
+    public static void tampilkanEkspedisiBerdasarkanLayanan(String jenisLayanan) {
+        printTableHeader();
 
-    boolean ditemukan = false;
+        boolean ditemukan = false;
 
-    for (DataEkspedisi e : Database.dataEkspedisi) {
-        if (e.jenis_layanan.equalsIgnoreCase(jenisLayanan)) {
-            printRow(e);
-            ditemukan = true;
+        for (DataEkspedisi e : Database.dataEkspedisi) {
+            if (e.jenis_layanan.equalsIgnoreCase(jenisLayanan)) {
+                printRow(e);
+                ditemukan = true;
+            }
         }
-    }
 
-    if (!ditemukan) {
-        System.out.println(
-                "|                DATA EKSPEDISI DENGAN LAYANAN " + jenisLayanan +
-                " TIDAK DITEMUKAN                                                                       |");
-    }
+        if (!ditemukan) {
+            System.out.println(
+                    "|                DATA EKSPEDISI DENGAN LAYANAN " + jenisLayanan
+                    + " TIDAK DITEMUKAN                                                                       |");
+        }
 
-    printTableFooter();
-}
+        printTableFooter();
+    }
 
     // SEARCH BY ID Ekspedisi
     public static DataEkspedisi cariById(int id) {
@@ -500,7 +502,6 @@ public static void tampilkanEkspedisiBerdasarkanLayanan(String jenisLayanan) {
         }
     }
 
-    // Tampilkan Ekspedisi Berdasarkan Jenis Layanan
     // Tampilkan Ekspedisi Berdasarkan Status Ekspedisi
     public static void tampilkanEkspedisiBerdasarkanStatus(String statusEkspedisi) {
         printTableHeader();
