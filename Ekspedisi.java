@@ -105,11 +105,10 @@ class Ekspedisi {
                     jenis_layanan = "ECO";
                     break;
                 default:
-                    // Tampilkan warning jika input tidak valid
                     System.out.println(Labels.warning("Tolong pilih opsi yang sesuai!"));
                     break;
             }
-        } while (jenis_layanan.equals("")); // Ulangi loop sampai jenis layanan valid
+        } while (jenis_layanan.equals(""));
 
         String no_resi = ResiGenerator.generateResi(jenis_layanan);
         System.out.println("Nomor Resi otomatis: " + no_resi);
@@ -125,19 +124,10 @@ class Ekspedisi {
         tampilkanTableOnly();
     }
 
-    // UPDATE
-    public static void editDataEkspedisi() {
+    public static void pilihEditAtauHapusEkspedisi() {
         tampilkanTableOnly();
 
-        int pilih, opsi;
-        String jenis_layanan = "";
-
-        if (Database.dataEkspedisi.isEmpty()) {
-            System.out.println(Labels.warning("WARNING: ") + "Tidak ada data EKSPEDISI untuk diedit.");
-            return;
-        }
-
-        System.out.print("\nMasukkan ID EKSPEDISI yang ingin diedit: ");
+        System.out.print("\nMasukkan ID Ekspedisi: ");
         int id = input.nextInt();
         input.nextLine();
 
@@ -148,6 +138,38 @@ class Ekspedisi {
             return;
         }
 
+        int pilih;
+        do {
+            System.out.println("\n=== Ubah Data Ekspedisi ===");
+            System.out.println("1. Edit Data");
+            System.out.println("2. Hapus Data");
+            System.out.println("0. Kembali");
+            System.out.print("Pilih: ");
+            pilih = input.nextInt();
+            input.nextLine();
+
+            switch (pilih) {
+                case 1:
+                    editDataEkspedisi(e);
+                    break;
+                case 2:
+                    hapusDataEkspedisi(e);
+                    pilih = 0;
+                    break;
+                case 0:
+                    TitlePrinter.sub("Kembali", Color.YELLOW);
+                    break;
+                default:
+                    System.out.println(Labels.opt_not_valid());
+            }
+        } while (pilih != 0);
+    }
+
+    // UPDATE
+    public static void editDataEkspedisi(DataEkspedisi e) {
+        int pilih, opsi;
+        String jenis_layanan = "";
+
         do {
             TitlePrinter.sub("Edit Data Ekspedisi", Color.YELLOW);
 
@@ -157,55 +179,47 @@ class Ekspedisi {
             System.out.println("4. Deskripsi Barang");
             System.out.println("5. Nomor Resi");
             System.out.println("6. Status");
-            System.out.println("0. Kembali/Selesai");
+            System.out.println("0. Selesai");
             System.out.print("Pilih: ");
             pilih = input.nextInt();
             input.nextLine();
 
-            System.out.println("=============================");
-
             switch (pilih) {
                 case 1:
                     Pelanggan.tampilkanTableOnly();
-                    System.out.print("\nPilih ID Pelanggan: ");
-                    int id_pelanggan = input.nextInt();
+                    System.out.print("ID Pelanggan Baru: ");
+                    int idP = input.nextInt();
                     input.nextLine();
 
-                    DataPelanggan p = cariByIdPelanggan(id_pelanggan);
-
-                    if (p == null) {
+                    if (cariByIdPelanggan(idP) == null) {
                         System.out.println(Labels.id_not_found());
-                        return;
+                    } else {
+                        e.id_pelanggan = idP;
                     }
-                    e.id_pelanggan = id_pelanggan;
                     break;
+
                 case 2:
-                    System.out.println("\nAlamat Pengirim Lama: " + e.alamat_pengirim);
                     System.out.print("Alamat Pengirim Baru: ");
-                    String alamat_pengirim = input.nextLine();
-                    e.alamat_pengirim = alamat_pengirim;
+                    e.alamat_pengirim = input.nextLine();
                     break;
+
                 case 3:
-                    System.out.println("\nAlamat Penerima Lama: " + e.alamat_penerima);
                     System.out.print("Alamat Penerima Baru: ");
-                    String alamat_penerima = input.nextLine();
-                    e.alamat_penerima = alamat_penerima;
+                    e.alamat_penerima = input.nextLine();
                     break;
+
                 case 4:
-                    System.out.println("\nDeskripsi Barang Lama: " + e.deskripsi_barang);
                     System.out.print("Deskripsi Barang Baru: ");
-                    String deskripsi_barang = input.nextLine();
-                    e.deskripsi_barang = deskripsi_barang;
+                    e.deskripsi_barang = input.nextLine();
                     break;
+
                 case 5:
-                    System.out.println(
-                            "Jenis Layanan Lama: " + e.status_ekspedisi);
                     do {
-                        System.out.println("\nPilih Jenis Layanan:");
                         System.out.println("[1] REG | [2] EXP | [3] ECO");
                         System.out.print("Pilih: ");
                         opsi = input.nextInt();
                         input.nextLine();
+
                         switch (opsi) {
                             case 1:
                                 jenis_layanan = "REG";
@@ -217,96 +231,53 @@ class Ekspedisi {
                                 jenis_layanan = "ECO";
                                 break;
                             default:
-                                System.out.println(Labels.warning("Tolong pilih opsi yang sesuai!"));
-                                break;
+                                System.out.println(Labels.warning("Pilihan tidak valid"));
                         }
                     } while (jenis_layanan.equals(""));
 
-                    String no_resi = ResiGenerator.generateResi(jenis_layanan);
-                    System.out.println("Nomor Resi otomatis: " + no_resi);
-
-                    e.no_resi = no_resi;
+                    e.no_resi = ResiGenerator.generateResi(jenis_layanan);
                     break;
 
                 case 6:
-                    System.out.println(
-                            "\nStatus Barang Lama: " + e.status_ekspedisi);
-                    System.out.println("Pilih Status Ekspedisi baru:");
                     System.out.println("[1] Selesai | [2] Sedang dikirim | [3] Sedang dikemas");
                     System.out.print("Pilih: ");
                     opsi = input.nextInt();
                     input.nextLine();
-                    String statusEkspedisi = "";
 
-                    // Menggunakan do-while loop untuk memastikan pemilihan valid
-                    do {
-                        switch (opsi) {
-                            case 1:
-                                statusEkspedisi = "Selesai";
-                                break;
-                            case 2:
-                                statusEkspedisi = "Sedang dikirim";
-                                break;
-                            case 3:
-                                statusEkspedisi = "Sedang dikemas";
-                                break;
-                            default:
-                                System.out.println(Labels.warning("Tolong pilih opsi yang sesuai!"));
-                                System.out.print("Pilih lagi: ");
-                                opsi = input.nextInt();
-                                input.nextLine();
-                                continue; // Ulangi pemilihan jika input salah
-                        }
-                    } while (statusEkspedisi.equals(""));
-
-                    e.status_ekspedisi = statusEkspedisi;
+                    if (opsi == 1) {
+                        e.status_ekspedisi = "Selesai";
+                    } else if (opsi == 2) {
+                        e.status_ekspedisi = "Sedang dikirim";
+                    } else if (opsi == 3) {
+                        e.status_ekspedisi = "Sedang dikemas";
+                    } else {
+                        System.out.println(Labels.opt_not_valid());
+                    }
                     break;
 
                 case 0:
-                    TitlePrinter.sub("Kembali", Color.YELLOW);
+                    System.out.println(Labels.success("Perubahan disimpan"));
                     break;
                 default:
                     System.out.println(Labels.opt_not_valid());
             }
         } while (pilih != 0);
 
-        System.out.println(Labels.success("Ekspedisi berhasil diubah!"));
-
         tampilkanTableOnly();
     }
 
     // DELETE
-    public static void hapusDataEkspedisi() {
-        tampilkanTableOnly();
+    public static void hapusDataEkspedisi(DataEkspedisi e) {
+        System.out.print("Yakin hapus data ini? (y/n): ");
+        String yn = input.nextLine();
 
-        if (Database.dataEkspedisi.isEmpty()) {
-            System.out.println(Labels.warning(" WARNING: Tidak ada data EKSPEDISI untuk dihapus."));
-            return;
+        if (yn.equalsIgnoreCase("y")) {
+            Database.dataEkspedisi.remove(e);
+            System.out.println(Labels.success("Data Ekspedisi berhasil dihapus"));
+            tampilkanTableOnly();
+        } else {
+            System.out.println(Labels.error("Penghapusan dibatalkan"));
         }
-
-        System.out.print("\nMasukkan ID EKSPEDISI yang ingin dihapus: ");
-        int id = input.nextInt();
-        input.nextLine();
-
-        System.out.print("Yakin hapus? (y/n): ");
-        String yn = input.next();
-
-        if (yn.equalsIgnoreCase("n")) {
-            System.out.println(Labels.error("Batal menghapus"));
-            return;
-        }
-
-        DataEkspedisi e = cariById(id);
-
-        if (e == null) {
-            System.out.println(Labels.id_not_found());
-            return;
-        }
-
-        Database.dataEkspedisi.remove(e);
-        System.out.println(Labels.success("Data EKSPEDISI berhasil dihapus!"));
-
-        tampilkanDataEkspedisi();
     }
 
     public static void menuSorting() {
@@ -363,19 +334,14 @@ class Ekspedisi {
 
     // MENU CRUD
     public static void menuCrud() {
-
         int pilih;
 
         do {
             System.out.println("====== Menu Ekspedisi ======");
             System.out.println("1. Tambah Data");
-            if (!Database.dataEkspedisi.isEmpty()) {
-                System.out.println("2. Edit Data");
-                System.out.println("3. Hapus Data");
-                System.out.println("4. Pencarian Data Ekspedisi");
-                System.out.println("5. Sorting Data Ekspedisi");
-
-            }
+            System.out.println("2. Edit / Hapus Data");
+            System.out.println("3. Pencarian Data Ekspedisi");
+            System.out.println("4. Sorting Data Ekspedisi");
             System.out.println("0. Kembali");
             System.out.print("Pilih: ");
             pilih = input.nextInt();
@@ -388,18 +354,18 @@ class Ekspedisi {
                     tambahDataEkspedisi();
                     break;
                 case 2:
-                    editDataEkspedisi();
+                    if (!Database.dataEkspedisi.isEmpty()) {
+                        pilihEditAtauHapusEkspedisi();
+                    } else {
+                        System.out.println(Labels.warning("Tidak ada data ekspedisi"));
+                    }
                     break;
                 case 3:
-                    hapusDataEkspedisi();
+                    cariDataEkspedisi();
                     break;
                 case 4:
-                    cariDataEkspedisi(); // Panggil pencarian ekspedisi
-                    break;
-                case 5:
                     menuSorting();
                     break;
-
                 case 0:
                     TitlePrinter.sub("Kembali", Color.YELLOW);
                     break;

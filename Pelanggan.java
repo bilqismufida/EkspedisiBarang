@@ -18,12 +18,9 @@ class Pelanggan {
         do {
             System.out.println("=== Menu Pelanggan ===");
             System.out.println("1. Tambah Data");
-            if (!Database.dataPelanggan.isEmpty()) {
-                System.out.println("2. Edit Data");
-                System.out.println("3. Hapus Data");
-                System.out.println("4. Pencarian Data");
-                System.out.println("5. Sorting Data");
-            }
+            System.out.println("2. Ubah Data");
+            System.out.println("3. Pencarian Data");
+            System.out.println("4. Sorting Data");
             System.out.println("0. Kembali");
             System.out.print("Pilih: ");
             pilih = input.nextInt();
@@ -35,32 +32,19 @@ class Pelanggan {
                 case 1:
                     tambahDataPelanggan();
                     break;
-
                 case 2:
                     if (!Database.dataPelanggan.isEmpty()) {
-                        editDataPelanggan();
+                        pilihEditAtauHapus();
                     } else {
-                        System.out.println(Labels.warning("Tidak ada data untuk diedit!"));
-                        tampilkanTableOnly();
+                        System.out.println(Labels.warning("Tidak ada data pelanggan"));
                     }
                     break;
-
                 case 3:
                     cariDataPelanggan();
                     break;
-
                 case 4:
-                    if (!Database.dataPelanggan.isEmpty()) {
-                        hapusDataPelanggan();
-                    } else {
-                        System.out.println(Labels.warning("Tidak ada data untuk dihapus"));
-                        tampilkanTableOnly();
-                    }
-                    break;
-                case 5:
                     menuSorting();
                     break;
-
                 case 0:
                     TitlePrinter.sub("Kembali", Color.YELLOW);
                     break;
@@ -136,18 +120,11 @@ class Pelanggan {
         menuCrud();
     }
 
-    // UPDATE
-    public static void editDataPelanggan() {
+    // SELECT
+    public static void pilihEditAtauHapus() {
         tampilkanTableOnly();
 
-        int pilih;
-
-        if (Database.dataPelanggan.isEmpty()) {
-            System.out.println(Labels.warning("Tidak ada data pelanggan untuk diedit."));
-            return;
-        }
-
-        System.out.print("\nMasukkan ID Pelanggan yang ingin diedit: ");
+        System.out.print("\nMasukkan ID Pelanggan: ");
         int id = input.nextInt();
         input.nextLine();
 
@@ -158,58 +135,23 @@ class Pelanggan {
             return;
         }
 
+        int pilih;
         do {
-
-            System.out.println("========= Edit Menu =========");
-            System.out.println("Pilih data yang ingin diedit\n");
-            System.out.println("1. Nama");
-            System.out.println("2. Alamat");
-            System.out.println("3. No Telp");
-            System.out.println("4. Email");
-            System.out.println("0. Kembali/Selesai");
+            System.out.println("\n=== Ubah Data Pelanggan ===");
+            System.out.println("1. Edit Data");
+            System.out.println("2. Hapus Data");
+            System.out.println("0. Kembali");
             System.out.print("Pilih: ");
             pilih = input.nextInt();
             input.nextLine();
 
-            System.out.println("=============================");
-
             switch (pilih) {
                 case 1:
-                    System.out.println("\nNama Pelanggan Lama: " + p.nama);
-                    System.out.print("Nama Pelanggan Baru: ");
-                    String nama = input.nextLine();
-                    p.nama = nama;
+                    editDataPelanggan(p);
                     break;
                 case 2:
-                    System.out.println("\nAlamat Lama: " + p.alamat);
-                    System.out.print("Alamat Baru: ");
-                    String alamat = input.nextLine();
-                    p.alamat = alamat;
-                    break;
-                case 3:
-                    System.out.println("\nTelepon Lama: " + p.telepon);
-                    System.out.print("Telepon Baru: ");
-
-                    int telepon;
-                    while (true) {
-                        System.out.print("Nomor Telepon (cont. 08123): ");
-                        try {
-                            telepon = input.nextInt();
-                            input.nextLine();
-                            break;
-                        } catch (InputMismatchException e) {
-                            System.out.println(Labels.warning("Nomor telepon harus berupa angka!"));
-                            input.nextLine();
-                        }
-                    }
-
-                    p.telepon = telepon;
-                    break;
-                case 4:
-                    System.out.println("\nEmail Lama: " + p.email);
-                    System.out.print("Email Baru: ");
-                    String email = input.nextLine();
-                    p.email = email;
+                    hapusDataPelanggan(p);
+                    pilih = 0;
                     break;
                 case 0:
                     TitlePrinter.sub("Kembali", Color.YELLOW);
@@ -218,41 +160,74 @@ class Pelanggan {
                     System.out.println(Labels.opt_not_valid());
             }
         } while (pilih != 0);
+    }
 
-        System.out.println("\n" + Labels.success("Pelanggan berhasil diedit!"));
+    //  UPDATE
+    public static void editDataPelanggan(DataPelanggan p) {
+        int pilih;
+        do {
+            System.out.println("========= Edit Menu =========");
+            System.out.println("1. Nama");
+            System.out.println("2. Alamat");
+            System.out.println("3. No Telp");
+            System.out.println("4. Email");
+            System.out.println("0. Selesai");
+            System.out.print("Pilih: ");
+            pilih = input.nextInt();
+            input.nextLine();
+
+            switch (pilih) {
+                case 1:
+                    System.out.print("Nama Baru: ");
+                    p.nama = input.nextLine();
+                    break;
+                case 2:
+                    System.out.print("Alamat Baru: ");
+                    p.alamat = input.nextLine();
+                    break;
+                case 3:
+                    while (true) {
+                        try {
+                            System.out.print("No Telp Baru: ");
+                            p.telepon = input.nextInt();
+                            input.nextLine();
+                            break;
+                        } catch (InputMismatchException e) {
+                            System.out.println(Labels.warning("Harus angka!"));
+                            input.nextLine();
+                        }
+                    }
+                    break;
+                case 4:
+                    System.out.print("Email Baru: ");
+                    p.email = input.nextLine();
+                    break;
+                case 0:
+                    System.out.println(Labels.success("Perubahan disimpan"));
+                    break;
+                default:
+                    System.out.println(Labels.opt_not_valid());
+            }
+        } while (pilih != 0);
 
         tampilkanTableOnly();
     }
 
     // DELETE
-    public static void hapusDataPelanggan() {
-        tampilkanTableOnly();
+    public static void hapusDataPelanggan(DataPelanggan p) {
+        System.out.print("Yakin hapus data ini? (y/n): ");
+        String yn = input.nextLine();
 
-        System.out.print("\nMasukkan ID Pelanggan yang ingin dihapus: ");
-        int id = input.nextInt();
-        input.nextLine();
-
-        DataPelanggan p = cariById(id);
-
-        if (p == null) {
-            System.out.println(Labels.id_not_found());
-            return;
+        if (yn.equalsIgnoreCase("y")) {
+            Database.dataPelanggan.remove(p);
+            System.out.println(Labels.success("Data berhasil dihapus"));
+            tampilkanTableOnly();
+        } else {
+            System.out.println(Labels.error("Penghapusan dibatalkan"));
         }
-
-        System.out.print("Yakin hapus? (y/n): ");
-        String yn = input.next();
-
-        if (yn.equalsIgnoreCase("n")) {
-            System.out.println(Labels.error("Batal menghapus"));
-            return;
-        }
-
-        Database.dataPelanggan.remove(p);
-        System.out.println("\n" + Labels.success("Pelanggan berhasil dihapus!"));
-
-        tampilkanTableOnly();
     }
 
+    // SORTING
     public static void menuSorting() {
         int pilih;
 
@@ -277,6 +252,7 @@ class Pelanggan {
         tampilkanTableOnly();
     }
 
+    //SORT BY ID
     public static void sortById() {
         for (int i = 0; i < Database.dataPelanggan.size() - 1; i++) {
             for (int j = 0; j < Database.dataPelanggan.size() - i - 1; j++) {
@@ -289,6 +265,7 @@ class Pelanggan {
         }
     }
 
+    //SORT BY NAMA
     public static void sortByNama() {
         for (int i = 0; i < Database.dataPelanggan.size() - 1; i++) {
             for (int j = 0; j < Database.dataPelanggan.size() - i - 1; j++) {
@@ -303,6 +280,7 @@ class Pelanggan {
         }
     }
 
+    // SEARCH
     public static void cariDataPelanggan() {
 
         Scanner input = new Scanner(System.in);
