@@ -10,20 +10,12 @@ public class ResiGenerator {
     private static final int RANDOM_LENGTH = 4;
 
     public static String generateResi(String jenisLayanan) {
-        // 1. Service code (REG / EXP / etc)
-        String serviceCode = jenisLayanan
-                .substring(0, Math.min(3, jenisLayanan.length()))
-                .toUpperCase();
-
-        // 2. Current date (YYYYMMDD)
         String date = LocalDate.now()
                 .format(DateTimeFormatter.ofPattern("yyyyMMdd"));
 
-        // 3. Random alphanumeric
         String randomPart = generateRandomString(RANDOM_LENGTH);
 
-        // 4. Combine
-        return serviceCode + "-" + date + "-" + randomPart;
+        return jenisLayanan + "-" + date + "-" + randomPart;
     }
 
     private static String generateRandomString(int length) {

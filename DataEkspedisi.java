@@ -1,7 +1,7 @@
 public class DataEkspedisi {
     int id_layanan, id_pelanggan, telepon;
     String alamat_pengirim, alamat_penerima, deskripsi_barang, no_resi, status_ekspedisi, pencarian_data, jenis_layanan;
-// ID_Layanan	id_pelanggan	Alamat Pengirim	alamat_penerima	deskripsi_barang	jenis_layanan	status_pengiriman	nomor_resi
+
     public DataEkspedisi(int id_layanan, int id_pelanggan, String alamat_pengirim, String alamat_penerima, String deskripsi_barang, String jenis_layanan, String no_resi, String status_ekspedisi) {
         this.id_layanan = id_layanan;
         this.id_pelanggan = id_pelanggan;

@@ -58,7 +58,8 @@ class Pelanggan {
                         tampilkanTableOnly();
                     }
                     break;
-                case 5: menuSorting();
+                case 5:
+                    menuSorting();
                     break;
 
                 case 0:
@@ -111,7 +112,7 @@ class Pelanggan {
         String email = input.next();
 
         System.out.println("=============================");
-        
+
         int nextId = Database.getNextPelangganId();
         Database.dataPelanggan.add(new DataPelanggan(nextId, nama, alamat, telepon, email));
         System.out.println("\n" + Labels.success("Pelanggan berhasil ditambahkan!"));
@@ -252,53 +253,56 @@ class Pelanggan {
 
         tampilkanTableOnly();
     }
+
     public static void menuSorting() {
-    int pilih;
+        int pilih;
 
-    System.out.println("\n=== Sorting Data Pelanggan ===");
-    System.out.println("1. Sorting berdasarkan ID");
-    System.out.println("2. Sorting berdasarkan Nama (A-Z)");
-    System.out.print("Pilih: ");
-    pilih = input.nextInt();
-    input.nextLine();
+        System.out.println("\n=== Sorting Data Pelanggan ===");
+        System.out.println("1. Sorting berdasarkan ID");
+        System.out.println("2. Sorting berdasarkan Nama (A-Z)");
+        System.out.print("Pilih: ");
+        pilih = input.nextInt();
+        input.nextLine();
 
-    switch (pilih) {
-        case 1:
-            sortById();
-            break;
-        case 2:
-            sortByNama();
-            break;
-        default:
-            System.out.println(Labels.opt_not_valid());
+        switch (pilih) {
+            case 1:
+                sortById();
+                break;
+            case 2:
+                sortByNama();
+                break;
+            default:
+                System.out.println(Labels.opt_not_valid());
+        }
+
+        tampilkanTableOnly();
     }
 
-    tampilkanTableOnly();
-}
-public static void sortById() {
-    for (int i = 0; i < Database.dataPelanggan.size() - 1; i++) {
-        for (int j = 0; j < Database.dataPelanggan.size() - i - 1; j++) {
-            if (Database.dataPelanggan.get(j).id > Database.dataPelanggan.get(j + 1).id) {
-                DataPelanggan temp = Database.dataPelanggan.get(j);
-                Database.dataPelanggan.set(j, Database.dataPelanggan.get(j + 1));
-                Database.dataPelanggan.set(j + 1, temp);
+    public static void sortById() {
+        for (int i = 0; i < Database.dataPelanggan.size() - 1; i++) {
+            for (int j = 0; j < Database.dataPelanggan.size() - i - 1; j++) {
+                if (Database.dataPelanggan.get(j).id > Database.dataPelanggan.get(j + 1).id) {
+                    DataPelanggan temp = Database.dataPelanggan.get(j);
+                    Database.dataPelanggan.set(j, Database.dataPelanggan.get(j + 1));
+                    Database.dataPelanggan.set(j + 1, temp);
+                }
             }
         }
     }
-}
-public static void sortByNama() {
-    for (int i = 0; i < Database.dataPelanggan.size() - 1; i++) {
-        for (int j = 0; j < Database.dataPelanggan.size() - i - 1; j++) {
-            if (Database.dataPelanggan.get(j).nama
-                    .compareToIgnoreCase(Database.dataPelanggan.get(j + 1).nama) > 0) {
 
-                DataPelanggan temp = Database.dataPelanggan.get(j);
-                Database.dataPelanggan.set(j, Database.dataPelanggan.get(j + 1));
-                Database.dataPelanggan.set(j + 1, temp);
+    public static void sortByNama() {
+        for (int i = 0; i < Database.dataPelanggan.size() - 1; i++) {
+            for (int j = 0; j < Database.dataPelanggan.size() - i - 1; j++) {
+                if (Database.dataPelanggan.get(j).nama
+                        .compareToIgnoreCase(Database.dataPelanggan.get(j + 1).nama) > 0) {
+
+                    DataPelanggan temp = Database.dataPelanggan.get(j);
+                    Database.dataPelanggan.set(j, Database.dataPelanggan.get(j + 1));
+                    Database.dataPelanggan.set(j + 1, temp);
+                }
             }
         }
     }
-}
 
     public static void cariDataPelanggan() {
 
