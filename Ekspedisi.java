@@ -19,17 +19,19 @@ class Ekspedisi {
 
         printTableHeader();
 
-        if (Database.dataEkspedisi.isEmpty()) {
+        if (Database.jumlahEkspedisi == 0) {
             System.out.println(
                     "|                TIDAK ADA DATA EKSPEDISI                                                                                            |");
             printTableFooter();
         } else {
-            for (DataEkspedisi p : Database.dataEkspedisi) {
-                printRow(p);
+            for (int i = 0; i < Database.jumlahEkspedisi; i++) {
+                DataEkspedisi e = Database.dataEkspedisi[i];
+                printRow(e);
             }
+
             printTableFooter();
         }
-        if (Database.dataPelanggan.isEmpty()) {
+        if (Database.jumlahPelanggan == 0) {
             System.out.println("");
             System.out.println(Labels.error("Tidak ada data pelanggan"));
             System.out.println("Diharap mengisi data pelanggan sebelum membuat data ekspedisi");
@@ -43,12 +45,12 @@ class Ekspedisi {
     public static void tampilkanTableOnly() {
         printTableHeader();
 
-        if (Database.dataEkspedisi.isEmpty()) {
+        if (Database.jumlahEkspedisi == 0) {
             System.out.println(
                     "|                TIDAK ADA DATA EKSPEDISI                                                                                            |");
         } else {
-            for (DataEkspedisi p : Database.dataEkspedisi) {
-                printRow(p);
+            for (int i = 0; i < Database.jumlahEkspedisi; i++) {
+                printRow(Database.dataEkspedisi[i]);
             }
         }
 
@@ -117,8 +119,13 @@ class Ekspedisi {
 
         System.out.println("=============================");
 
-        Database.dataEkspedisi.add(new DataEkspedisi(nextId++, id_pelanggan, alamat_pengirim, alamat_penerima,
-                deskripsi_barang, jenis_layanan, no_resi, status_ekspedisi));
+        Database.dataEkspedisi[Database.jumlahEkspedisi]
+                = new DataEkspedisi(nextId++, id_pelanggan,
+                        alamat_pengirim, alamat_penerima,
+                        deskripsi_barang, jenis_layanan,
+                        no_resi, status_ekspedisi);
+
+        Database.jumlahEkspedisi++;
         System.out.println(Labels.success("EKSPEDISI berhasil ditambahkan!"));
 
         tampilkanTableOnly();
@@ -268,16 +275,15 @@ class Ekspedisi {
     }
 
     // DELETE
-    public static void hapusDataEkspedisi(DataEkspedisi e) {
-        System.out.print("Yakin hapus data ini? (y/n): ");
-        String yn = input.nextLine();
-
-        if (yn.equalsIgnoreCase("y")) {
-            Database.dataEkspedisi.remove(e);
-            System.out.println(Labels.success("Data Ekspedisi berhasil dihapus"));
-            tampilkanTableOnly();
-        } else {
-            System.out.println(Labels.error("Penghapusan dibatalkan"));
+    static void hapusDataEkspedisi(DataEkspedisi e) {
+        for (int i = 0; i < Database.jumlahEkspedisi; i++) {
+            if (Database.dataEkspedisi[i] == e) {
+                for (int j = i; j < Database.jumlahEkspedisi - 1; j++) {
+                    Database.dataEkspedisi[j] = Database.dataEkspedisi[j + 1];
+                }
+                Database.jumlahEkspedisi--;
+                break;
+            }
         }
     }
 
@@ -306,28 +312,28 @@ class Ekspedisi {
     }
 
     public static void sortByIdEkspedisi() {
-        for (int i = 0; i < Database.dataEkspedisi.size() - 1; i++) {
-            for (int j = 0; j < Database.dataEkspedisi.size() - i - 1; j++) {
-                if (Database.dataEkspedisi.get(j).id_layanan
-                        > Database.dataEkspedisi.get(j + 1).id_layanan) {
+        for (int i = 0; i < Database.jumlahEkspedisi - 1; i++) {
+            for (int j = 0; j < Database.jumlahEkspedisi - i - 1; j++) {
+                if (Database.dataEkspedisi[j].id_layanan
+                        > Database.dataEkspedisi[j + 1].id_layanan) {
 
-                    DataEkspedisi temp = Database.dataEkspedisi.get(j);
-                    Database.dataEkspedisi.set(j, Database.dataEkspedisi.get(j + 1));
-                    Database.dataEkspedisi.set(j + 1, temp);
+                    DataEkspedisi temp = Database.dataEkspedisi[j];
+                    Database.dataEkspedisi[j] = Database.dataEkspedisi[j + 1];
+                    Database.dataEkspedisi[j + 1] = temp;
                 }
             }
         }
     }
 
     public static void sortByStatus() {
-        for (int i = 0; i < Database.dataEkspedisi.size() - 1; i++) {
-            for (int j = 0; j < Database.dataEkspedisi.size() - i - 1; j++) {
-                if (Database.dataEkspedisi.get(j).status_ekspedisi
-                        .compareToIgnoreCase(Database.dataEkspedisi.get(j + 1).status_ekspedisi) > 0) {
+        for (int i = 0; i < Database.jumlahEkspedisi - 1; i++) {
+            for (int j = 0; j < Database.jumlahEkspedisi - i - 1; j++) {
+                if (Database.dataEkspedisi[j].status_ekspedisi
+                        .compareToIgnoreCase(Database.dataEkspedisi[j + 1].status_ekspedisi) > 0) {
 
-                    DataEkspedisi temp = Database.dataEkspedisi.get(j);
-                    Database.dataEkspedisi.set(j, Database.dataEkspedisi.get(j + 1));
-                    Database.dataEkspedisi.set(j + 1, temp);
+                    DataEkspedisi temp = Database.dataEkspedisi[j];
+                    Database.dataEkspedisi[j] = Database.dataEkspedisi[j + 1];
+                    Database.dataEkspedisi[j + 1] = temp;
                 }
             }
         }
@@ -356,7 +362,7 @@ class Ekspedisi {
                     tambahDataEkspedisi();
                     break;
                 case 2:
-                    if (!Database.dataEkspedisi.isEmpty()) {
+                    if (Database.jumlahEkspedisi != 0) {
                         pilihEditAtauHapusEkspedisi();
                     } else {
                         System.out.println(Labels.warning("Tidak ada data ekspedisi"));
@@ -415,7 +421,9 @@ class Ekspedisi {
 
         boolean ditemukan = false;
 
-        for (DataEkspedisi e : Database.dataEkspedisi) {
+        for (int i = 0; i < Database.jumlahEkspedisi; i++) {
+            DataEkspedisi e = Database.dataEkspedisi[i];
+
             if (e.jenis_layanan.equalsIgnoreCase(jenisLayanan)) {
                 printRow(e);
                 ditemukan = true;
@@ -424,18 +432,18 @@ class Ekspedisi {
 
         if (!ditemukan) {
             System.out.println(
-                    "|                DATA EKSPEDISI DENGAN LAYANAN " + jenisLayanan
-                    + " TIDAK DITEMUKAN                                                                       |");
+                    "|        DATA EKSPEDISI DENGAN LAYANAN " + jenisLayanan
+                    + " TIDAK DITEMUKAN                                               |");
         }
 
         printTableFooter();
     }
 
     // SEARCH BY ID Ekspedisi
-    public static DataEkspedisi cariById(int id) {
-        for (DataEkspedisi e : Database.dataEkspedisi) {
-            if (e.id_layanan == id) {
-                return e;
+    static DataEkspedisi cariById(int id) {
+        for (int i = 0; i < Database.jumlahEkspedisi; i++) {
+            if (Database.dataEkspedisi[i].id_layanan == id) {
+                return Database.dataEkspedisi[i];
             }
         }
         return null;

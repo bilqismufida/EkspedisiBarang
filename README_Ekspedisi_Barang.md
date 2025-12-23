@@ -61,6 +61,9 @@ A. FITUR WAJIB
    - Mengurutkan data pelanggan berdasarkan ID pelanggan (ASC) dan nama (A-Z)
    - Mengurutkan data ekspedisi berdasarkan ID ekspedisi (ASC) dan status (Dikemas-Dikirim-Selesai)
 
+6. Tampilan Jenis Layanan Ekspedisi
+   - Menampilkan data ekspedisi berdasarkan jenis layanan yang dipilih
+
 
 B. FITUR TAMBAHAN
 -----------------

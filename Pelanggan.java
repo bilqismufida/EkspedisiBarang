@@ -33,7 +33,7 @@ class Pelanggan {
                     tambahDataPelanggan();
                     break;
                 case 2:
-                    if (!Database.dataPelanggan.isEmpty()) {
+                    if (Database.jumlahPelanggan != 0) {
                         pilihEditAtauHapus();
                     } else {
                         System.out.println(Labels.warning("Tidak ada data pelanggan"));
@@ -58,13 +58,14 @@ class Pelanggan {
     public static void tampilkanTableOnly() {
         printTableHeader();
 
-        if (Database.dataPelanggan.isEmpty()) {
+        if (Database.jumlahPelanggan == 0) {
             System.out.println(
                     "|                TIDAK ADA DATA PELANGGAN                                                 |");
         } else {
-            for (DataPelanggan p : Database.dataPelanggan) {
-                printRow(p);
+            for (int i = 0; i < Database.jumlahPelanggan; i++) {
+                printRow(Database.dataPelanggan[i]);
             }
+
         }
 
         printTableFooter();
@@ -97,7 +98,8 @@ class Pelanggan {
         System.out.println("=============================");
 
         int nextId = Database.getNextPelangganId();
-        Database.dataPelanggan.add(new DataPelanggan(nextId, nama, alamat, telepon, email));
+        Database.dataPelanggan[Database.jumlahPelanggan] = new DataPelanggan(nextId, nama, alamat, telepon, email);
+        Database.jumlahPelanggan++;
         System.out.println("\n" + Labels.success("Pelanggan berhasil ditambahkan!"));
 
         tampilkanTableOnly();
@@ -107,12 +109,12 @@ class Pelanggan {
     public static void tampilkanDataPelanggan() {
         printTableHeader();
 
-        if (Database.dataPelanggan.isEmpty()) {
+        if (Database.jumlahPelanggan == 0) {
             System.out.println(
                     "|                TIDAK ADA DATA PELANGGAN                                                 |");
         } else {
-            for (DataPelanggan p : Database.dataPelanggan) {
-                printRow(p);
+            for (int i = 0; i < Database.jumlahPelanggan; i++) {
+                printRow(Database.dataPelanggan[i]);
             }
         }
         printTableFooter();
@@ -215,16 +217,15 @@ class Pelanggan {
     }
 
     // DELETE
-    public static void hapusDataPelanggan(DataPelanggan p) {
-        System.out.print("Yakin hapus data ini? (y/n): ");
-        String yn = input.nextLine();
-
-        if (yn.equalsIgnoreCase("y")) {
-            Database.dataPelanggan.remove(p);
-            System.out.println(Labels.success("Data berhasil dihapus"));
-            tampilkanTableOnly();
-        } else {
-            System.out.println(Labels.error("Penghapusan dibatalkan"));
+    static void hapusDataPelanggan(DataPelanggan p) {
+        for (int i = 0; i < Database.jumlahPelanggan; i++) {
+            if (Database.dataPelanggan[i] == p) {
+                for (int j = i; j < Database.jumlahPelanggan - 1; j++) {
+                    Database.dataPelanggan[j] = Database.dataPelanggan[j + 1];
+                }
+                Database.jumlahPelanggan--;
+                break;
+            }
         }
     }
 
@@ -255,12 +256,12 @@ class Pelanggan {
 
     //SORT BY ID
     public static void sortById() {
-        for (int i = 0; i < Database.dataPelanggan.size() - 1; i++) {
-            for (int j = 0; j < Database.dataPelanggan.size() - i - 1; j++) {
-                if (Database.dataPelanggan.get(j).id > Database.dataPelanggan.get(j + 1).id) {
-                    DataPelanggan temp = Database.dataPelanggan.get(j);
-                    Database.dataPelanggan.set(j, Database.dataPelanggan.get(j + 1));
-                    Database.dataPelanggan.set(j + 1, temp);
+        for (int i = 0; i < Database.jumlahPelanggan - 1; i++) {
+            for (int j = 0; j < Database.jumlahPelanggan - i - 1; j++) {
+                if (Database.dataPelanggan[j].id > Database.dataPelanggan[j + 1].id) {
+                    DataPelanggan temp = Database.dataPelanggan[j];
+                    Database.dataPelanggan[j] = Database.dataPelanggan[j + 1];
+                    Database.dataPelanggan[j + 1] = temp;
                 }
             }
         }
@@ -268,20 +269,18 @@ class Pelanggan {
 
     //SORT BY NAMA
     public static void sortByNama() {
-        for (int i = 0; i < Database.dataPelanggan.size() - 1; i++) {
-            for (int j = 0; j < Database.dataPelanggan.size() - i - 1; j++) {
-                if (Database.dataPelanggan.get(j).nama
-                        .compareToIgnoreCase(Database.dataPelanggan.get(j + 1).nama) > 0) {
-
-                    DataPelanggan temp = Database.dataPelanggan.get(j);
-                    Database.dataPelanggan.set(j, Database.dataPelanggan.get(j + 1));
-                    Database.dataPelanggan.set(j + 1, temp);
+        for (int i = 0; i < Database.jumlahPelanggan - 1; i++) {
+            for (int j = 0; j < Database.jumlahPelanggan - i - 1; j++) {
+                if (Database.dataPelanggan[j].nama.compareToIgnoreCase(Database.dataPelanggan[j + 1].nama) > 0) {
+                    DataPelanggan temp = Database.dataPelanggan[j];
+                    Database.dataPelanggan[j] = Database.dataPelanggan[j + 1];
+                    Database.dataPelanggan[j + 1] = temp;
                 }
             }
         }
     }
-
     // SEARCH
+
     public static void cariDataPelanggan() {
 
         Scanner input = new Scanner(System.in);
@@ -336,12 +335,11 @@ class Pelanggan {
     }
 
     // SEARCH BY ID
-    public static DataPelanggan cariById(int id) {
-        for (DataPelanggan p : Database.dataPelanggan) {
-            if (p.id == id) {
-                return p;
+    static DataPelanggan cariById(int id) {
+        for (int i = 0; i < Database.jumlahPelanggan; i++) {
+            if (Database.dataPelanggan[i].id == id) {
+                return Database.dataPelanggan[i];
             }
-
         }
         return null;
     }
@@ -358,6 +356,10 @@ class Pelanggan {
     }
 
     private static void printRow(DataPelanggan p) {
+        if (p == null) {
+            return;
+        }
+
         System.out.printf("| %-2d | %-20s | %-20s | %-13d | %-20s |\n",
                 p.id, p.nama, p.alamat, p.telepon, p.email);
     }
