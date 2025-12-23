@@ -53,11 +53,7 @@ A. FITUR WAJIB
    - Berdasarkan jenis layanan
    - Berdasarkan kata kunci tertentu
 
-4. Informasi Jumlah Data
-   - Jumlah pelanggan
-   - Jumlah data ekspedisi/barang
-
-5. Manipulasi Data
+4. Manipulasi Data
    - Edit dan hapus data pelanggan
    - Edit dan hapus data ekspedisi
 

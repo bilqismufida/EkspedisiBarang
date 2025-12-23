@@ -20,10 +20,9 @@ class Pelanggan {
             System.out.println("1. Tambah Data");
             if (!Database.dataPelanggan.isEmpty()) {
                 System.out.println("2. Edit Data");
-                System.out.println("3. Pencarian Data");
-                System.out.println("4. Hapus Data");
+                System.out.println("3. Hapus Data");
+                System.out.println("4. Pencarian Data");
                 System.out.println("5. Sorting Data");
-
             }
             System.out.println("0. Kembali");
             System.out.print("Pilih: ");
