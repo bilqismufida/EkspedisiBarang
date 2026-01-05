@@ -153,7 +153,14 @@ class Pelanggan {
                     editDataPelanggan(p);
                     break;
                 case 2:
-                    hapusDataPelanggan(p);
+                    System.out.print("Apakah anda yakin? (y/n): ");
+                    char verif = input.next().charAt(0);
+                    if (verif == 'y') {
+                        hapusDataPelanggan(p);
+                        System.out.println(Labels.success("Data [ID: " + id + "] Berhasil Dihapus"));
+                    }else{
+                        System.out.println(Labels.error("Data [ID: " + id + "] Batal Dihapus"));
+                    }
                     pilih = 0;
                     break;
                 case 0:
